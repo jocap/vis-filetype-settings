@@ -30,11 +30,11 @@ filetype, leading to an infinite loop.
 
 ### Installation
 
-As a suggestion, copy `vis-autocmd.lua` into `~/.config/vis/plugins/`
-and add the following to your `visrc.lua`:
+As a suggestion, copy `vis-filetype-settings.lua` into
+`~/.config/vis/plugins/` and add the following to your `visrc.lua`:
 
 ```lua
-require('plugins/vis-autocmd.lua')
+require("plugins/vis-filetype-settings")
 
 settings = {
     filetype = settings
