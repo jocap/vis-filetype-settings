@@ -1,5 +1,5 @@
--- vis-autocmd
--- (https://github.com/jocap/vis-autocmd)
+-- vis-filetype-settings
+-- (https://github.com/jocap/vis-filetype-settings)
 
 -- This plugin provides a declarative interface for setting vis
 -- options depending on filetype.

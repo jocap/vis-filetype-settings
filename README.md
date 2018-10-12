@@ -1,4 +1,4 @@
-## vis-autocmd
+## vis-filetype-settings
 
 This plugin provides a declarative interface for setting vis
 options depending on filetype.
