@@ -7,7 +7,7 @@
 -- It expects a global variable called `settings` to be defined:
 -- 
 -- 	settings = {
--- 		markdown = {"expandtab on", "tabwidth 4"}
+-- 		markdown = {'set expandtab on', 'set tabwidth 4'}
 -- 	}
 -- 
 -- In this variable, filetypes are mapped to sets of settings that are
