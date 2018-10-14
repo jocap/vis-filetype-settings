@@ -7,7 +7,7 @@ It expects a global variable called `settings` to be defined:
 
 ```lua
 settings = {
-    markdown = {'set expandtab on', 'set tabwidth 4'}
+    markdown = {"set expandtab on", "set tabwidth 4"}
 }
 ```
 
@@ -34,7 +34,7 @@ As a suggestion, copy `vis-filetype-settings.lua` into
 `~/.config/vis/plugins/` and add the following to your `visrc.lua`:
 
 ```lua
-require('plugins/vis-filetype-settings')
+require("plugins/vis-filetype-settings")
 
 settings = {
     filetype = settings

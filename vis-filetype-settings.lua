@@ -7,7 +7,7 @@
 -- It expects a global variable called `settings` to be defined:
 -- 
 -- 	settings = {
--- 		markdown = {'set expandtab on', 'set tabwidth 4'}
+-- 		markdown = {"set expandtab on", "set tabwidth 4"}
 -- 	}
 -- 
 -- In this variable, filetypes are mapped to sets of settings that are
@@ -28,11 +28,11 @@
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 	local window_settings = settings[win.syntax]
 
-	if type(window_settings) == 'table' then
+	if type(window_settings) == "table" then
 		for _, setting in pairs(window_settings) do
 			vis:command(setting)
 		end
-	elseif type(window_settings) == 'function' then
+	elseif type(window_settings) == "function" then
 		window_settings(win)
 	end
 end)
