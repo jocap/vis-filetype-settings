@@ -1,7 +1,9 @@
 -- vis-filetype-settings
 -- (https://github.com/jocap/vis-filetype-settings)
 
-local settings = {}
+local M = {}
+
+M.settings = {}
 
 function execute(s, arg, arg2)
 	if type(s) == "table" then
@@ -22,8 +24,8 @@ end
 -- Register events
 
 vis.events.subscribe(vis.events.INPUT, function()
-	if settings[vis.win.syntax] and settings[vis.win.syntax].INPUT then
-		execute(settings[vis.win.syntax].INPUT, nil)
+	if M.settings[vis.win.syntax] and M.settings[vis.win.syntax].INPUT then
+		execute(M.settings[vis.win.syntax].INPUT, nil)
 	end
 end)
 
@@ -38,8 +40,8 @@ for _, event in pairs(file_events) do
 	vis.events.subscribe(vis.events[event], function(file, path)
 		for win in vis:windows() do
 			if win.file == file then
-				if settings[win.syntax] and settings[win.syntax][event] then
-					execute(settings[win.syntax][event], file, path)
+				if M.settings[win.syntax] and M.settings[win.syntax][event] then
+					execute(M.settings[win.syntax][event], file, path)
 				end
 			end
 		end
@@ -55,13 +57,15 @@ local win_events = {
 
 for _, event in pairs(win_events) do
 	vis.events.subscribe(vis.events[event], function(win)
-                if settings[win.syntax] == nil then return end
-		if settings[win.syntax] then
-			if settings[win.syntax][event] then
-				execute(settings[win.syntax][event], win)
+                if M.settings[win.syntax] == nil then return end
+		if M.settings[win.syntax] then
+			if M.settings[win.syntax][event] then
+				execute(M.settings[win.syntax][event], win)
 			elseif event == "WIN_OPEN" then -- default event
-				execute(settings[win.syntax], win)
+				execute(M.settings[win.syntax], win)
 			end
 		end
 	end)
 end
+
+return M

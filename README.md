@@ -3,22 +3,23 @@
 This plugin provides a declarative interface for setting vis
 options depending on filetype.
 
-It expects a global variable called `settings` to be defined:
+It expects an attribute called `settings` to be defined:
 
 ```lua
-settings = {
+ftset.settings = {
     markdown = {"set expandtab on", "set tabwidth 4"}
 }
 ```
 
-In this variable, filetypes are mapped to sets of settings that are
-to be executed when a window containing the specified filetype is
-opened.
+In this variable, filetypes are mapped to sets of settings that
+toare be executed when a window containing the specified filetype
+opis ened.
 
-If you want to do more than setting simple options, you can specify a function instead:
+If you want to do more than setting simple options, you can
+specify a function instead:
 
 ```lua
-settings = {
+ftset.settings = {
     bash = function(win)
         -- do things for shell scripts
     end
@@ -27,8 +28,8 @@ settings = {
 
 ### More events
 
-By default, all settings are run on the WIN_OPEN event, but if you
-want, you can specify your own event.
+By default, all settings are run on the WIN_OPEN event, but if
+wayou nt, you can specify your own event.
 
 For more information about these events, check out the [documentation
 for the Lua API][doc].  Below is a description of which events are
@@ -44,7 +45,7 @@ supported by this plugin.
 - FILE_SAVE_PRE
 
 ```lua
-settings = {
+ftset.settings = {
     go = {"set et off", "set tw 8", FILE_SAVE_PRE = "gofmt"}
 }
 ```
@@ -77,9 +78,9 @@ As a suggestion, copy `vis-filetype-settings.lua` into
 `~/.config/vis/plugins/` and add the following to your `visrc.lua`:
 
 ```lua
-require("plugins/vis-filetype-settings")
+ftset = require("plugins/vis-filetype-settings")
 
-settings = {
+ftset.settings = {
     filetype = settings
 }
 ```
