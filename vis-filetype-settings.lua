@@ -1,39 +1,67 @@
 -- vis-filetype-settings
 -- (https://github.com/jocap/vis-filetype-settings)
 
--- This plugin provides a declarative interface for setting vis
--- options depending on filetype.
--- 
--- It expects a global variable called `settings` to be defined:
--- 
--- 	settings = {
--- 		markdown = {"set expandtab on", "set tabwidth 4"}
--- 	}
--- 
--- In this variable, filetypes are mapped to sets of settings that are
--- to be executed when a window containing the specified filetype is
--- opened.
--- 
--- If you want to do more than setting simple options, you can specify a function instead:
--- 
--- 	settings = {
--- 		bash = function(win)
--- 			-- do things for shell scripts
--- 		end
--- 	}
--- 
--- Be sure not to run commands that open another window with the same
--- filetype, leading to an infinite loop.
+local settings = {}
 
-vis.events.subscribe(vis.events.WIN_OPEN, function(win)
-	if settings == nil then return end
-	local window_settings = settings[win.syntax]
-
-	if type(window_settings) == "table" then
-		for _, setting in pairs(window_settings) do
-			vis:command(setting)
+function execute(s, arg, arg2)
+	if type(s) == "table" then
+		for key, setting in pairs(s) do
+			if type(key) == "number" then -- ignore EVENT keys
+				vis:command(setting)
+			end
 		end
-	elseif type(window_settings) == "function" then
-		window_settings(win)
+	elseif type(s) == "function" then
+		if arg2 then
+			s(arg, arg2)
+		else
+			s(arg)
+		end
+	end
+end
+
+-- Register events
+
+vis.events.subscribe(vis.events.INPUT, function()
+	if settings[vis.win.syntax] and settings[vis.win.syntax].INPUT then
+		execute(settings[vis.win.syntax].INPUT, nil)
 	end
 end)
+
+local file_events = {
+	"FILE_OPEN",
+	"FILE_CLOSE",
+	"FILE_SAVE_POST",
+	"FILE_SAVE_PRE"
+}
+
+for _, event in pairs(file_events) do
+	vis.events.subscribe(vis.events[event], function(file, path)
+		for win in vis:windows() do
+			if win.file == file then
+				if settings[win.syntax] and settings[win.syntax][event] then
+					execute(settings[win.syntax][event], file, path)
+				end
+			end
+		end
+	end)
+end
+
+local win_events = {
+	"WIN_CLOSE",
+	"WIN_HIGHLIGHT",
+	"WIN_OPEN",
+	"WIN_STATUS"
+}
+
+for _, event in pairs(win_events) do
+	vis.events.subscribe(vis.events[event], function(win)
+                if settings[win.syntax] == nil then return end
+		if settings[win.syntax] then
+			if settings[win.syntax][event] then
+				execute(settings[win.syntax][event], win)
+			elseif event == "WIN_OPEN" then -- default event
+				execute(settings[win.syntax], win)
+			end
+		end
+	end)
+end
