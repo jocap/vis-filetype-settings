@@ -28,6 +28,10 @@
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 	if settings == nil then return end
 	local window_settings = settings[win.syntax]
+	if window_settings == nil then
+		local ext = win.file.name:match '^.+(%..+)$'
+		window_settings = settings[ext]
+	end
 
 	if type(window_settings) == "table" then
 		for _, setting in pairs(window_settings) do
